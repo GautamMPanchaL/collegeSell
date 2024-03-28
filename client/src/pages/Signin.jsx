@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import {Link, useNavigate} from "react-router-dom"
 import {useDispatch, useSelector} from 'react-redux'
-import { signInStart, sigInSuccess, signInFailure } from '../redux/user/userSlice.js';
+import { signInStart, signInSuccess, signInFailure } from '../redux/user/userSlice.js';
 import OAuth from '../components/OAuth.jsx';
 
 export default function Signin() {
@@ -19,7 +19,7 @@ const handleSubmit = async (e) => {
   e.preventDefault();
   try {
     dispatch(signInStart());
-    const res = await fetch("/api/signup", {
+    const res = await fetch("/api/auth/signin", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
@@ -38,10 +38,10 @@ const handleSubmit = async (e) => {
       return;
       setError(data.message);
     }
-    dispatch(sigInSuccess(data));
+    dispatch(signInSuccess(data));
     navigate('/');
   } catch (error) {
-    dispatch(signInFailure(error));
+    dispatch(signInFailure(error.message));
   }
 };
 
@@ -55,12 +55,12 @@ const handleSubmit = async (e) => {
         <OAuth/>
       </form>
       <div className='flex gap-2 mt-5'>
-        <p>Dont have an account? 
+        <p>Dont have an account? </p>
         <Link to={"/sign-up"}>
           <span className='text-blue-700'> Sign Up</span>
         </Link>
-        </p>
       </div>
+      {error && <p className='text-red-500 mt-5'>{error}</p>}
     </div>
-  )
+  );
 }

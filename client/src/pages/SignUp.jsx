@@ -16,7 +16,7 @@ const handleSubmit = async (e) => {
   e.preventDefault();
   setLoading(true);
   try {
-    const res = await fetch("/api/signup", {
+    const res = await fetch("/api/auth/signup", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
@@ -33,10 +33,14 @@ const handleSubmit = async (e) => {
     if(data.success === false){
       setLoading(false);
       setError(data.message);
+      return;
     }
     setLoading(false);
+    setError(null);
     navigate('/sign-in');
   } catch (error) {
+    setLoading(false);
+    setError(error.message)
     console.error("Error during fetch:", error.message);
   }
 };
@@ -52,12 +56,13 @@ const handleSubmit = async (e) => {
         <OAuth/>
       </form>
       <div className='flex gap-2 mt-5'>
-        <p>Have a account? 
+        <p>Have an account? 
         <Link to={"/sign-in"}>
           <span className='text-blue-700'> Sign in</span>
         </Link>
         </p>
       </div>
+       {error && <p className='text-red-500 mt-5'>{error}</p>}
     </div>
-  )
+  );
 }
