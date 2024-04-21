@@ -26,7 +26,7 @@ const handleSubmit = async (e) => {
       },
       body: JSON.stringify(formData),
     });
-
+    // console.log(res);
     if (!res.ok) {
       throw new Error(`Server responded with status: ${res.status}`);
     }
@@ -36,7 +36,7 @@ const handleSubmit = async (e) => {
     if(data.success === false){
       dispatch(signInFailure(data.message));
       return;
-      setError(data.message);
+      // setError(data.message);
     }
     dispatch(signInSuccess(data));
     navigate('/');
